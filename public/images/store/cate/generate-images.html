@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Category Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        .preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .image-container {
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+        }
+        .download-all {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .download-link {
+            display: block;
+            margin-top: 5px;
+            text-decoration: none;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate Category Images</h1>
+    <p>This tool will generate placeholder images for the Shop by Category section.</p>
+    
+    <div class="controls">
+        <button id="generateBtn" class="download-all">Generate All Images</button>
+    </div>
+    
+    <div class="preview" id="preview"></div>
+    
+    <script>
+        const categories = [
+            { id: 'office-furniture', name: 'Office Furniture', color: '#4CAF50' },
+            { id: 'books', name: 'Books', color: '#2196F3' },
+            { id: 'teachers-supplies', name: 'Teacher\'s Supplies', color: '#FFC107' },
+            { id: 'gifts-decoration', name: 'Gifts & Decoration', color: '#E91E63' },
+            { id: 'school-supplies', name: 'School Supplies', color: '#9C27B0' },
+            { id: 'office-supplies', name: 'Office Supplies', color: '#FF5722' },
+            { id: 'kids', name: 'Kids', color: '#00BCD4' },
+            { id: 'Kits', name: 'Kits', color: '#795548' },
+            { id: 'uniforms', name: 'Uniforms', color: '#607D8B' },
+            { id: 'courses', name: 'Courses', color: '#3F51B5' }
+        ];
+        
+        function generateImage(category) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 300;
+            canvas.height = 300;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = category.color;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(category.name, canvas.width / 2, canvas.height / 2);
+            
+            return canvas;
+        }
+        
+        function createDownloadLink(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.textContent = `Download ${filename}`;
+            link.className = 'download-link';
+            return link;
+        }
+        
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const previewDiv = document.getElementById('preview');
+            previewDiv.innerHTML = '';
+            
+            categories.forEach(category => {
+                const container = document.createElement('div');
+                container.className = 'image-container';
+                
+                const canvas = generateImage(category);
+                const filename = `${category.id}.jpg`;
+                const downloadLink = createDownloadLink(canvas, filename);
+                
+                container.appendChild(canvas);
+                container.appendChild(downloadLink);
+                previewDiv.appendChild(container);
+            });
+        });
+    </script>
+</body>
+</html>

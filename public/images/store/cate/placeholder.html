@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Placeholders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .category {
+            width: 300px;
+            height: 300px;
+            margin: 10px;
+            display: inline-block;
+            background-color: #f0f0f0;
+            text-align: center;
+            line-height: 300px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Category Placeholders</h1>
+    <p>Right-click each image and save it with the appropriate filename (e.g., "office-furniture.jpg")</p>
+    
+    <div class="category" id="office-furniture">Office Furniture</div>
+    <div class="category" id="books">Books</div>
+    <div class="category" id="teachers-supplies">Teacher's Supplies</div>
+    <div class="category" id="gifts-decoration">Gifts & Decoration</div>
+    <div class="category" id="school-supplies">School Supplies</div>
+    <div class="category" id="office-supplies">Office Supplies</div>
+    <div class="category" id="kids">Kids</div>
+    <div class="category" id="Kits">Kits</div>
+    <div class="category" id="uniforms">Uniforms</div>
+    <div class="category" id="courses">Courses</div>
+    
+    <script>
+        // You can take screenshots of these divs and save them as JPG files
+        document.querySelectorAll('.category').forEach(div => {
+            div.title = `Save as: ${div.id}.jpg`;
+        });
+    </script>
+</body>
+</html>

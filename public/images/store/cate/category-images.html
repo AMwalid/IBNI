@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Image Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .instructions {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .category {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        canvas {
+            width: 300px;
+            height: 300px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .download-all {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Category Image Generator</h1>
+    
+    <div class="instructions">
+        <h2>Instructions:</h2>
+        <ol>
+            <li>Click "Generate All Images" to create all category images</li>
+            <li>For each category, click "Download" to save the image</li>
+            <li>Save each image with its exact ID as the filename (e.g., "office-furniture.jpg")</li>
+            <li>Place all images in the <code>/public/images/store/cate/</code> directory</li>
+        </ol>
+    </div>
+    
+    <button id="generateAll" class="download-all">Generate All Images</button>
+    
+    <div class="grid" id="categoryGrid"></div>
+    
+    <script>
+        const categories = [
+            { id: 'office-furniture', name: 'Office Furniture', color: '#4CAF50' },
+            { id: 'books', name: 'Books', color: '#2196F3' },
+            { id: 'teachers-supplies', name: 'Teacher\'s Supplies', color: '#FFC107' },
+            { id: 'gifts-decoration', name: 'Gifts & Decoration', color: '#E91E63' },
+            { id: 'school-supplies', name: 'School Supplies', color: '#9C27B0' },
+            { id: 'office-supplies', name: 'Office Supplies', color: '#FF5722' },
+            { id: 'kids', name: 'Kids', color: '#00BCD4' },
+            { id: 'Kits', name: 'Kits', color: '#795548' },
+            { id: 'uniforms', name: 'Uniforms', color: '#607D8B' },
+            { id: 'courses', name: 'Courses', color: '#3F51B5' }
+        ];
+        
+        function generateCategoryImage(canvas, category) {
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background
+            ctx.fillStyle = category.color;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(category.name, canvas.width / 2, canvas.height / 2);
+        }
+        
+        function downloadImage(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function createCategoryElement(category) {
+            const div = document.createElement('div');
+            div.className = 'category';
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = 300;
+            canvas.height = 300;
+            
+            const nameLabel = document.createElement('p');
+            nameLabel.textContent = category.name;
+            
+            const idLabel = document.createElement('p');
+            idLabel.textContent = `ID: ${category.id}`;
+            idLabel.style.fontSize = '14px';
+            idLabel.style.color = '#666';
+            
+            const downloadButton = document.createElement('button');
+            downloadButton.textContent = 'Download';
+            downloadButton.onclick = () => downloadImage(canvas, `${category.id}.jpg`);
+            
+            div.appendChild(canvas);
+            div.appendChild(nameLabel);
+            div.appendChild(idLabel);
+            div.appendChild(downloadButton);
+            
+            generateCategoryImage(canvas, category);
+            
+            return div;
+        }
+        
+        document.getElementById('generateAll').addEventListener('click', () => {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = '';
+            
+            categories.forEach(category => {
+                const categoryElement = createCategoryElement(category);
+                grid.appendChild(categoryElement);
+            });
+        });
+    </script>
+</body>
+</html>
