@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
+import { Suspense } from "react"
 import TeacherProfileBouaziz from "@/components/pages/teacher-profile-bouaziz"
 
 export default function TeacherProfileBouazizPage() {
@@ -25,5 +26,9 @@ export default function TeacherProfileBouazizPage() {
     }
   }
 
-  return <TeacherProfileBouaziz navigateTo={navigateTo} showBackButton={showBackButton} />
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TeacherProfileBouaziz navigateTo={navigateTo} showBackButton={showBackButton} />
+    </Suspense>
+  )
 }
