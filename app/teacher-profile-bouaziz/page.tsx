@@ -7,14 +7,7 @@ import TeacherProfileBouaziz from "@/components/pages/teacher-profile-bouaziz"
 
 export default function TeacherProfileBouazizPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [showBackButton, setShowBackButton] = useState(false)
-
-  useEffect(() => {
-    // Check if the page was accessed from the find resources page
-    const fromFindResources = searchParams.get('fromFindResources')
-    setShowBackButton(fromFindResources === 'true')
-  }, [searchParams])
 
   const navigateTo = (page: string, tab?: string | null) => {
     if (page === "find-resources") {
@@ -28,7 +21,20 @@ export default function TeacherProfileBouazizPage() {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <TeacherProfileBouaziz navigateTo={navigateTo} showBackButton={showBackButton} />
+      <ClientComponent router={router} showBackButton={showBackButton} navigateTo={navigateTo} />
     </Suspense>
   )
+}
+
+function ClientComponent({ router, showBackButton, navigateTo }: { router: any; showBackButton: boolean; navigateTo: (page: string, tab?: string | null) => void }) {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    // Check if the page was accessed from the find resources page
+    const fromFindResources = searchParams.get('fromFindResources')
+    showBackButton(fromFindResources === 'true')
+  }, [searchParams])
+
+  return <TeacherProfileBouaziz navigateTo={navigateTo} showBackButton={showBackButton} />
+}
 }

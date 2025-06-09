@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "pkg": {
+    "assets": ["node_modules/.prisma/client/*.node"]
+  },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "^3.9.1",
