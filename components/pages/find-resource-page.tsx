@@ -12,6 +12,7 @@ import { ComparePanel } from "@/components/ui/compare-panel"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
+import { AdBanner } from "@/components/ui/ad-banner"
 import FindResourcesLayout from "@/components/layouts/find-resources-layout"
 
 interface FindResourcePageProps {
@@ -506,6 +507,16 @@ export default function FindResourcePage({ initialTab, navigateTo }: FindResourc
               onSelectItem={handleViewProfile}
             />
           )}
+        </div>
+
+        {/* Advertisement Banner */}
+        <div className="mb-4">
+          <AdBanner
+            title="Promote Your Educational Institution"
+            description="Get your school or teaching services in front of thousands of parents and students actively searching for educational resources."
+            ctaText="Start Advertising"
+            ctaLink="/advertise"
+          />
         </div>
 
         {comparedItems.length > 0 && (

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, BookOpen, GraduationCap, School, Search, ShoppingBag, UserCheck, Users } from "lucide-react"
+import { ArrowRight, BookOpen, GraduationCap, School, Search, ShoppingBag, UserCheck, Users, Star, Award, Clock, LucideIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -10,31 +10,110 @@ interface UserTypePageProps {
   navigateTo: (page: string, initialTab?: string | null) => void
 }
 
+interface Stat {
+  value: string
+  label: string
+  icon: LucideIcon
+}
+
+interface ValueProp {
+  title: string
+  description: string
+  content: string
+  icon: LucideIcon
+  features?: string[]
+}
+
+interface Testimonial {
+  quote: string
+  author: string
+  role: string
+}
+
+interface Feature {
+  title: string
+  description: string
+  items: string[]
+  icon: LucideIcon
+  link: string
+  linkTab?: string | null
+}
+
+interface UserTypeContent {
+  title: string
+  description: string
+  stats?: Stat[]
+  valueProps: ValueProp[]
+  testimonials?: Testimonial[]
+  features: Feature[]
+  ctaTitle: string
+  ctaDescription: string
+}
+
+interface ContentMap {
+  [key: string]: UserTypeContent
+}
+
 export default function UserTypePage({ userType, navigateTo }: UserTypePageProps) {
   // Define content based on user type
-  const content = {
+  const content: ContentMap = {
     parent: {
       title: "How IBNI Helps Parents",
       description: "Empower your child's educational journey with IBNI. Find the best schools, connect with qualified teachers, and track your child's progress all in one place.",
+      stats: [
+        { value: "10K+", label: "Active Parents", icon: Users },
+        { value: "95%", label: "Success Rate", icon: Star },
+        { value: "24/7", label: "Support Available", icon: Clock },
+      ],
       valueProps: [
         {
           title: "Quality Education",
           description: "Find the best educational institutions for your child",
           content: "Access comprehensive information about schools, their programs, and performance metrics to make informed decisions about your child's education.",
           icon: GraduationCap,
+          features: [
+            "Detailed school profiles and reviews",
+            "Performance metrics and rankings",
+            "Curriculum and program information",
+            "Extracurricular activities overview"
+          ]
         },
         {
           title: "Expert Teachers",
           description: "Connect with qualified and experienced educators",
           content: "Browse profiles of teachers, view their qualifications, and find the perfect match for your child's learning needs.",
           icon: UserCheck,
+          features: [
+            "Verified teacher credentials",
+            "Teaching style and methodology",
+            "Student success stories",
+            "Flexible scheduling options"
+          ]
         },
         {
           title: "Progress Tracking",
           description: "Monitor your child's academic journey",
           content: "Track your child's progress, view grades, attendance, and performance metrics in real-time to support their learning journey.",
           icon: BookOpen,
+          features: [
+            "Real-time grade tracking",
+            "Attendance monitoring",
+            "Performance analytics",
+            "Personalized recommendations"
+          ]
         },
+      ],
+      testimonials: [
+        {
+          quote: "IBNI has transformed how I manage my children's education. The progress tracking feature is invaluable!",
+          author: "Sarah M.",
+          role: "Parent of two"
+        },
+        {
+          quote: "Finding the right school was so much easier with IBNI's comprehensive comparison tools.",
+          author: "Michael R.",
+          role: "Parent of three"
+        }
       ],
       features: [
         {
@@ -376,11 +455,31 @@ export default function UserTypePage({ userType, navigateTo }: UserTypePageProps
   return (
     <div className="container mx-auto py-12 px-4">
       {/* Hero Section */}
-      <section className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-green-700 mb-4">{userTypeContent.title}</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          {userTypeContent.description}
-        </p>
+      <section className="relative overflow-hidden mb-16">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-green-200 rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-200 rounded-full opacity-20 blur-3xl"></div>
+        
+        <div className="relative text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-green-700 mb-4">{userTypeContent.title}</h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            {userTypeContent.description}
+          </p>
+          
+          {/* Stats Section */}
+          {userTypeContent.stats && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
+              {userTypeContent.stats.map((stat, index) => (
+                <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-green-50">
+                  <div className="flex items-center justify-center mb-2">
+                    <stat.icon className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div className="text-3xl font-bold text-green-600 mb-2">{stat.value}</div>
+                  <div className="text-gray-600">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Value Proposition */}
@@ -392,25 +491,59 @@ export default function UserTypePage({ userType, navigateTo }: UserTypePageProps
                 <div className="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <prop.icon className="h-6 w-6 text-green-700" />
                 </div>
-                <CardTitle>{prop.title}</CardTitle>
-                <CardDescription>{prop.description}</CardDescription>
+                <CardTitle className="text-xl">{prop.title}</CardTitle>
+                <CardDescription className="text-base">{prop.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
+                <p className="text-gray-600 mb-4">
                   {prop.content}
                 </p>
+                {prop.features && (
+                  <ul className="space-y-2">
+                    {prop.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <div className="h-5 w-5 rounded-full bg-green-100 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
+                          <div className="h-2 w-2 rounded-full bg-green-600"></div>
+                        </div>
+                        <span className="text-gray-600">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </CardContent>
             </Card>
           ))}
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      {userTypeContent.testimonials && (
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold text-center mb-10">What Parents Say About IBNI</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {userTypeContent.testimonials.map((testimonial, index) => (
+              <Card key={index} className="bg-gradient-to-br from-green-50 to-white">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col h-full">
+                    <p className="text-gray-700 text-lg mb-4 flex-grow">"{testimonial.quote}"</p>
+                    <div className="border-t border-green-100 pt-4">
+                      <p className="font-semibold text-green-700">{testimonial.author}</p>
+                      <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Features Section */}
       <section className="mb-16">
         <h2 className="text-3xl font-bold text-center mb-10">Key Features for {userType.charAt(0).toUpperCase() + userType.slice(1)}s</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {userTypeContent.features.map((feature, index) => (
-            <Card key={index}>
+            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="bg-green-100 p-2 rounded-full">
@@ -430,7 +563,7 @@ export default function UserTypePage({ userType, navigateTo }: UserTypePageProps
               <CardFooter>
                 <Button 
                   asChild 
-                  className="w-full"
+                  className="w-full bg-green-600 hover:bg-green-700"
                   onClick={() => navigateTo(feature.link, feature.linkTab || null)}
                 >
                   <div className="flex items-center justify-center">
@@ -444,7 +577,7 @@ export default function UserTypePage({ userType, navigateTo }: UserTypePageProps
       </section>
 
       {/* CTA Section */}
-      <section className="bg-green-50 rounded-xl p-8 text-center">
+      <section className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-8 text-center">
         <h2 className="text-3xl font-bold mb-4">{userTypeContent.ctaTitle}</h2>
         <p className="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
           {userTypeContent.ctaDescription}
