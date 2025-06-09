@@ -1,10 +1,10 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import TeacherProfileMansouri from "@/components/pages/teacher-profile-mansouri"
 
-export default function TeacherProfileMansouriPage() {
+function TeacherProfileMansouriContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showBackButton, setShowBackButton] = useState(false)
@@ -26,4 +26,16 @@ export default function TeacherProfileMansouriPage() {
   }
 
   return <TeacherProfileMansouri navigateTo={navigateTo} showBackButton={showBackButton} />
+}
+
+export default function TeacherProfileMansouriPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    }>
+      <TeacherProfileMansouriContent />
+    </Suspense>
+  )
 }
