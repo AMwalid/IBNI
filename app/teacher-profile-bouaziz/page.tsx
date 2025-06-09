@@ -21,20 +21,20 @@ export default function TeacherProfileBouazizPage() {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ClientComponent router={router} showBackButton={showBackButton} navigateTo={navigateTo} />
+      <ClientComponent router={router} setShowBackButton={setShowBackButton} navigateTo={navigateTo} />
     </Suspense>
   )
 }
 
-function ClientComponent({ router, showBackButton, navigateTo }: { router: any; showBackButton: boolean; navigateTo: (page: string, tab?: string | null) => void }) {
+function ClientComponent({ router, setShowBackButton, navigateTo }: { router: any; setShowBackButton: (value: boolean) => void; navigateTo: (page: string, tab?: string | null) => void }) {
   const searchParams = useSearchParams()
 
   useEffect(() => {
     // Check if the page was accessed from the find resources page
     const fromFindResources = searchParams.get('fromFindResources')
-    showBackButton(fromFindResources === 'true')
-  }, [searchParams])
+    setShowBackButton(fromFindResources === 'true')
+  }, [searchParams, setShowBackButton])
 
-  return <TeacherProfileBouaziz navigateTo={navigateTo} showBackButton={showBackButton} />
+  return <TeacherProfileBouaziz navigateTo={navigateTo} showBackButton={false} />
 }
 }
